@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <h4>MENU</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item active"><a href="#"><i class="fa-solid fa-gauge-high"></i> Tổng quan</a>
+                    </li>
+                    <li class="list-group-item"><a href="#"><i class="fa-solid fa-ticket"></i> Quản lý đơn hàng</a></li>
+                    <li class="list-group-item"><a href="#"><i class="fa-solid fa-clapperboard"></i> Quản lý phim</a>
+                    </li>
+                    <li class="list-group-item"><a href="#"><i class="fa-solid fa-user-pen"></i></i> Quản lý nhân
+                        viên</a></li>
+                    <li class="list-group-item"><a href="#"><i class="fa-solid fa-users-viewfinder"></i></i> Quản lý
+                        khách hàng</a></li>
+                    <li class="list-group-item"><a href="#"><i class="fa-solid fa-file-lines"></i></i> Quản lý bài viết</a>
+                    </li>
+                    <li class="list-group-item"><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard order">
+                <div class="create">
+                    <a href="#"><i class="fa-solid fa-square-plus"></i> Thêm đơn hàng</a>
+                </div>
+                <div class="table-main">
+                    <div class="search-table">
+                        <form>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="col-lg-6 form-floating mb-3">
+                                        <input type="text" class="form-control" id="codeOrder"
+                                               placeholder="name@example.com">
+                                        <label for="codeOrder"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo mã
+                                            đơn</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7 d-flex justify-content-between">
+                                    <div class="col-auto form-floating mb-3">
+                                        <input type="text" class="form-control" id="nameFilm"
+                                               placeholder="name@example.com">
+                                        <label for="nameFilm"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo tên
+                                            phim</label>
+                                    </div>
+                                    <div class="col-auto form-floating mb-3">
+                                        <input type="date" class="form-control" id="dateOrder">
+                                        <label for="dateOrder"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo
+                                            thời gian</label>
+                                    </div>
+                                    <div class="col-lg-2 form-floating mb-3">
+                                        <input type="submit" class="form-control btn btn-primary" value="Tìm">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">MÃ ĐƠN</th>
+                            <th scope="col">TÊN FILM</th>
+                            <th scope="col">KHÁCH HÀNG</th>
+                            <th scope="col">SUẤT CHIẾU</th>
+                            <th scope="col">TỔNG TIỀN</th>
+                            <th scope="col">THAO TÁC</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>#12921</td>
+                            <td>Vầng Trăng Máu</td>
+                            <td>Phạm Văn Thành</td>
+                            <td>15h30 28/10/2023</td>
+                            <td>100.000 đ</td>
+                            <td>
+                                <a href="#" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#12921</td>
+                            <td>Vầng Trăng Máu</td>
+                            <td>Phạm Văn Thành</td>
+                            <td>15h30 28/10/2023</td>
+                            <td>100.000 đ</td>
+                            <td>
+                                <a href="#" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#12921</td>
+                            <td>Vầng Trăng Máu</td>
+                            <td>Phạm Văn Thành</td>
+                            <td>15h30 28/10/2023</td>
+                            <td>100.000 đ</td>
+                            <td>
+                                <a href="#" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#12921</td>
+                            <td>Vầng Trăng Máu</td>
+                            <td>Phạm Văn Thành</td>
+                            <td>15h30 28/10/2023</td>
+                            <td>100.000 đ</td>
+                            <td>
+                                <a href="#" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#12921</td>
+                            <td>Vầng Trăng Máu</td>
+                            <td>Phạm Văn Thành</td>
+                            <td>15h30 28/10/2023</td>
+                            <td>100.000 đ</td>
+                            <td>
+                                <a href="#" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#12921</td>
+                            <td>Vầng Trăng Máu</td>
+                            <td>Phạm Văn Thành</td>
+                            <td>15h30 28/10/2023</td>
+                            <td>100.000 đ</td>
+                            <td>
+                                <a href="#" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#12921</td>
+                            <td>Vầng Trăng Máu</td>
+                            <td>Phạm Văn Thành</td>
+                            <td>15h30 28/10/2023</td>
+                            <td>100.000 đ</td>
+                            <td>
+                                <a href="#" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#12921</td>
+                            <td>Vầng Trăng Máu</td>
+                            <td>Phạm Văn Thành</td>
+                            <td>15h30 28/10/2023</td>
+                            <td>100.000 đ</td>
+                            <td>
+                                <a href="#" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#12921</td>
+                            <td>Vầng Trăng Máu</td>
+                            <td>Phạm Văn Thành</td>
+                            <td>15h30 28/10/2023</td>
+                            <td>100.000 đ</td>
+                            <td>
+                                <a href="#" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#12921</td>
+                            <td>Vầng Trăng Máu</td>
+                            <td>Phạm Văn Thành</td>
+                            <td>15h30 28/10/2023</td>
+                            <td>100.000 đ</td>
+                            <td>
+                                <a href="#" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i></a>
+                                <a href="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="#" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link">Trước</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Sau</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

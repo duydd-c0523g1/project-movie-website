@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section id="banner-detail">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="card text-bg-dark">
+                    <img th:src="${movie.banner}" class="card-img"
+                         th:alt="${'Banner '+movie.title}" height="500px">
+                    <div class="card-img-overlay d-flex align-items-center">
+                        <div class="col-lg-4 text-center">
+                            <img class="w-75" th:src="${movie.avatar}" th:alt="${'Ảnh đại diện '+movie.title}">
+                        </div>
+                        <div class="col-lg-8">
+                            <h3 class="display-5 fw-bold" th:text="${movie.title}">Cú Máy Ăn Tiền</h3>
+                            <p class="text-secondary-custom" th:text="${'Đạo diễn '+movie.director}">Cobweb · 2023 · 135
+                                phút</p>
+                            <p class="text-secondary-custom" th:text="${'Khởi chiếu vào ngày '+movie.releaseDate}">Khởi
+                                chiếu vào ngày 10/11/2023</p>
+                            <h4 class="mt-3">Nội dung</h4>
+                            <p class="text-secondary-custom" th:utext="${movie.description}">Cú Máy Ăn Tiền lấy bối cảnh
+                                thực tế và câu chuyện làm phim
+                                những năm 1970 ở Hàn Quốc. Kim Yeol (Song Kang Ho thủ vai) - một đạo diễn điện ảnh có bộ
+                                phim đầu tay được giới phê bình khen ngợi, nhưng sự nghiệp của ông tuột dốc không phanh
+                                khi liên tiếp ra đời những tác phẩm bị coi là “phim rác”. Sau khi hoàn thành xong bộ
+                                phim mới nhất là Cobweb, đạo diễn Kim cảm thấy cần quay lại cái kết để có thể tạo ra một
+                                kiệt tác. Tuy nhiên, kịch bản mới không vượt qua được khâu kiểm duyệt và các diễn viên
+                                cũng không thể hiểu được cái kết mới của ông. Giữa lịch trình rối rắm, sự phản đối từ
+                                nhà sản xuất, sự can thiệp của cơ quan kiểm duyệt và những mâu thuẫn đang xung đột trước
+                                mắt khiến đạo diễn Kim như muốn phát điên, nhưng ông vẫn tiếp tục một cách bất chấp:
+                                “Nếu tôi có thể thay đổi cái kết, một kiệt tác sẽ xuất hiện. Tất cả những gì tôi cần là
+                                2 ngày”.Thu gọn</p>
+                            <div class="d-flex">
+                                <div class="date-start">
+                                    <h4>Ngày chiếu</h4>
+                                    <p class="text-secondary-custom" th:text="${movie.releaseDate}">13/10/2023</p>
+                                </div>
+                                <div class="type-film">
+                                    <h4>Thể loại</h4>
+                                    <p class="text-secondary-custom" th:text="${movie.category.nameCategory}">Chính
+                                        kịch, Hài</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="show-times">
+        <h2 class="my-5" th:text="${'Lịch chiếu '+ movie.title}">Lịch chiếu Cú Máy Ăn Tiền</h2>
+        <div th:each="showTimeMap: ${movie.showTimesMap()}" class="row mb-3">
+            <h4>Ngày chiếu</h4>
+            <p class="text-secondary-custom" th:text="${showTimeMap.getKey()}">13/10/2023</p>
+            <div th:each="showTime: ${showTimeMap.getValue()}" class="col-lg-2 show-time-info">
+                <a th:href="@{/showtime/detail/__${showTime.id}__}">
+                    <div class="info">
+                        <h4 th:text="${showTime.startTime+' - '+showTime.endTime}">15:30 - 17:30</h4>
+                        <h5 th:text="${'Giá vé: '+#numbers.formatDecimal(showTime.price, 0, 'POINT', 0, 'COMMA')} + ' đ'">
+                            100.000 đ</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2 class="my-5" th:text="${'Đánh giá về '+ movie.title}">Đánh giá phim Cú Máy Ăn Tiền</h2>
+        <div class="row">
+            <div class="col-lg-12 mb-3">
+                <div class="d-flex">
+                    <div class="avatar-user">
+                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    </div>
+                    <div class="info-user-header mx-3">
+                        <h4>Phạm Văn Thành</h4>
+                        <p class="text-secondary-custom">14/10/2023</p>
+                    </div>
+                </div>
+                <div class="content-rating">
+                    <p>Cú Máy Ăn Tiền lấy bối cảnh thực tế và câu chuyện làm phim những năm 1970 ở Hàn Quốc. Kim Yeol
+                        (Song Kang Ho thủ vai) - một đạo diễn điện ảnh có bộ phim đầu tay được giới phê bình khen ngợi,
+                        nhưng sự nghiệp của ông tuột dốc không phanh khi liên tiếp ra đời những tác phẩm bị coi là “phim
+                        rác”. Sau khi hoàn thành xong bộ phim mới nhất là Cobweb, đạo diễn Kim cảm thấy cần quay lại cái
+                        kết để có thể tạo ra một kiệt tác. Tuy nhiên, kịch bản mới không vượt qua được khâu kiểm duyệt
+                        và các diễn viên cũng không thể hiểu được cái kết mới của ông. Giữa lịch trình rối rắm, sự phản
+                        đối từ nhà sản xuất, sự can thiệp của cơ quan kiểm duyệt và những mâu thuẫn đang xung đột trước
+                        mắt khiến đạo diễn Kim như muốn phát điên, nhưng ông vẫn tiếp tục một cách bất chấp: “Nếu tôi có
+                        thể thay đổi cái kết, một kiệt tác sẽ xuất hiện. Tất cả những gì tôi cần là 2 ngày”</p>
+                </div>
+            </div>
+            <div class="col-lg-12 mb-3">
+                <div class="d-flex">
+                    <div class="avatar-user">
+                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    </div>
+                    <div class="info-user-header mx-3">
+                        <h4>Phạm Văn Thành</h4>
+                        <p class="text-secondary-custom">14/10/2023</p>
+                    </div>
+                </div>
+                <div class="content-rating">
+                    <p>Cú Máy Ăn Tiền lấy bối cảnh thực tế và câu chuyện làm phim những năm 1970 ở Hàn Quốc. Kim Yeol
+                        (Song Kang Ho thủ vai) - một đạo diễn điện ảnh có bộ phim đầu tay được giới phê bình khen ngợi,
+                        nhưng sự nghiệp của ông tuột dốc không phanh khi liên tiếp ra đời những tác phẩm bị coi là “phim
+                        rác”. Sau khi hoàn thành xong bộ phim mới nhất là Cobweb, đạo diễn Kim cảm thấy cần quay lại cái
+                        kết để có thể tạo ra một kiệt tác. Tuy nhiên, kịch bản mới không vượt qua được khâu kiểm duyệt
+                        và các diễn viên cũng không thể hiểu được cái kết mới của ông. Giữa lịch trình rối rắm, sự phản
+                        đối từ nhà sản xuất, sự can thiệp của cơ quan kiểm duyệt và những mâu thuẫn đang xung đột trước
+                        mắt khiến đạo diễn Kim như muốn phát điên, nhưng ông vẫn tiếp tục một cách bất chấp: “Nếu tôi có
+                        thể thay đổi cái kết, một kiệt tác sẽ xuất hiện. Tất cả những gì tôi cần là 2 ngày”</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

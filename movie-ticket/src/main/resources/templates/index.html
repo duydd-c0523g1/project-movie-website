@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section id="banner-home">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="card text-bg-dark">
+                    <img alt="..." class="card-img" src="/image/banner-source.png">
+                    <div class="card-img-overlay d-flex align-items-end">
+                        <div class="p-lg-3 mb-lg-4 p-md-0 mb-md-0 bg-body-tertiary rounded-3">
+                            <div class="container">
+                                <h3 class="display-5 fw-bold">Vầng Trăng Máu</h3>
+                                <p class="text-secondary-custom">Thể loại: Hành động</p>
+                                <p class="text-secondary-custom">Đạo diễn: Martin Scorsese</p>
+                                <p class="text-secondary-custom">Diễn viên chính: Leonardo DiCaprio</p>
+                                <p class="text-secondary-custom">Khởi chiếu vào ngày 10/11/2023</p>
+                                <a class="btn btn-primary" href="#" role="button">Đặt vé ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="my-5" id="list-fim-home">
+        <h3>Phim sắp chiếu</h3>
+        <div class="row mt-3">
+            <div class="col-lg-2 my-3" th:each="movie: ${movies}">
+                <a th:href="@{/movie/detail/__${movie.id}__}">
+                    <div class="card text-bg-dark">
+                        <img class="card-img" th:alt="${movie.title}" th:src="${movie.avatar}">
+                        <div class="card-img-overlay">
+                            <h5 class="card-title" th:text="${movie.title}">Đất Rừng Phương Nam</h5>
+                            <p class="card-text" th:text="${'Thể loại: '+movie.category.nameCategory}">Thể loại: Gia
+                                đình, Phiêu Lưu</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="my-5" id="category-film">
+        <h3>Thể loại Phim</h3>
+        <div class="row mt-3">
+            <div class="col-lg-3 my-3" th:each="category: ${categories}">
+                <a th:href="@{/movie/category/__${category.id}__}">
+                    <div class="card text-bg-dark">
+                        <img class="card-img" th:alt="${category.nameCategory}" th:src="${category.image}">
+                        <div class="card-img-overlay d-flex justify-content-center align-items-center">
+                            <h5 class="card-title" th:text="${category.nameCategory}">Hành động</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section id="banner-footer">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="card text-bg-dark">
+                    <img alt="Banner Footer" class="card-img" src="/image/banner-footer.png">
+                    <div class="card-img-overlay d-flex align-items-center justify-content-center text-center">
+                        <div>
+                            <h2 class="fs-2 fw-bold">Đặt ngay vé để không bỏ lỡ những bộ phim Hot nhất</h2>
+                            <button class="btn btn-primary my-3">1800 8198</button>
+                            <p class="card-text my-2">Bạn cần hỗ trợ?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

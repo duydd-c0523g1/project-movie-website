@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section id="select-seats">
+        <div class="row my-5 justify-content-center">
+            <h3 class="text-center mb-5" th:text="${'Chọn ghế xem phim '+showTime.movie.title}">Chọn ghế xem phim Cú Máy Ăn Tiền</h3>
+            <div class="col-lg-9 map">
+                <form th:action="@{/showtime/check-out/__${id}__}" method="post">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <h5 class="my-3">MÀN HÌNH</h5>
+                        <hr style="width: 50%;color: #D9D9D9">
+                    </div>
+                    <div class="row">
+                        <div th:each="seat,loop: ${seats}" style="width: 10%" class="selected-seat">
+                            <input name="seat-select" th:disabled="${seatsActive.contains(seat)}" th:id="${seat}" type="checkbox" class="btn-check"
+                                   th:value="${seat}">
+                            <label th:for="${seat}" class="btn seat"
+                                   th:text="${seat}">Checked</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 example possible">
+                            <div class="box"></div>
+                            <h4>Ghế đã có người đặt</h4>
+                        </div>
+                        <div class="col-lg-4 example not">
+                            <div class="box"></div>
+                            <h4>Ghế có thể đặt</h4>
+                        </div>
+                        <div class="col-lg-4 example user-select">
+                            <div class="box"></div>
+                            <h4>Ghế bạn chọn</h4>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="d-flex justify-content-center">
+                            <input type="submit" class="btn btn-primary" value="Xác nhận">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

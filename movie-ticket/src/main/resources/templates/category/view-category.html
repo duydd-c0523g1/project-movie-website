@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard category">
+                <h3 th:text="${'Xem danh mục ' + category.nameCategory}" class="my-4">Xem danh mục phim</h3>
+                <div class="mb-3 row">
+                    <label for="nameCategory" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" id="nameCategory"
+                               th:value="${category.nameCategory}">
+                    </div>
+                </div>
+                <div id="preview-image-add" class="row mb-3">
+                    <div class="col-sm-2"><label class="col-form-label">Hình ảnh danh mục</label></div>
+                    <div class="col-sm-10">
+                        <div id="image-preview-container2" class="img-thumbnail">
+                            <img width="300px" height="150px" th:src="${category.image}" alt="image chose" src=""/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

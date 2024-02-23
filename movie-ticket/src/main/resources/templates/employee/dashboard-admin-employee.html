@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard category">
+                <div class="create">
+                    <a href="/dashboard/employee/add"><i class="fa-solid fa-square-plus"></i> Thêm nhân viên mới</a>
+                </div>
+                <div class="table-main">
+                    <div class="search-table">
+                        <form action="/dashboard/employee/search">
+                            <div class="row">
+                                <div class="col-lg-5">
+<!--                                    <div class="col-lg-3 form-floating mb-3">-->
+<!--                                        <input type="number" class="form-control" id="idEmployee" name="idEmployee"-->
+<!--                                               placeholder="Nhập id" th:value="${idEmployee}">-->
+<!--                                        <label for="idEmployee"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo ID</label>-->
+<!--                                    </div>-->
+                                </div>
+
+                                <div class="col-lg-7 d-flex justify-content-end">
+                                    <div class="col-auto form-floating mb-3 me-3">
+                                        <input type="text" class="form-control" id="nameEmployee" name="nameEmployee"
+                                               placeholder="Nhập tên nhân viên" th:value="${nameEmployee}">
+                                        <label for="nameEmployee"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo
+                                            tên nhân viên</label>
+                                    </div>
+                                    <div class="col-lg-2 form-floating mb-3">
+                                        <input type="submit" class="form-control btn btn-primary" value="Tìm">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">TÊN NHÂN VIÊN</th>
+                            <th scope="col">SĐT</th>
+                            <th scope="col">EMAIL</th>
+                            <th scope="col">TÀI KHOẢN</th>
+                            <th scope="col" colspan="3">THAO TÁC</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item: ${employees}">
+                            <td th:text="${item.id}"></td>
+                            <td th:text="${item.fullName}"></td>
+                            <td th:text="${item.phoneNumber}"></td>
+                            <td th:text="${item.email}"></td>
+                            <td th:text="${item.account.username}"></td>
+                            <td>
+                                <a th:href="@{/dashboard/employee/view/__${item.id}__}" title="Xem chi tiết"><i
+                                        class="fa-solid fa-file-lines"></i></a>
+                                <a th:href="@{/dashboard/employee/edit/__${item.id}__}" title="Sửa"><i
+                                        class="fa-solid fa-pen-to-square"></i></a>
+                                <a th:attr="onclick=|sendDataModal('${item.id}','${item.fullName}')|" title="Xóa"
+                                   role="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                                        class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li th:class="${employees.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{${#httpServletRequest.getRequestURI()}+ '?page=' + ${employees.number - 1}}">Trước</a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(0, employees.totalPages - 1)}" th:class="${i == employees.number ? 'page-item active' : 'page-item'}">
+                            <a class="page-link" th:text="${i + 1}" th:href="@{
+                            ${#httpServletRequest.getRequestURI()} + '?page=' + ${i}}"></a>
+                        </li>
+                        <li th:class="${employees.hasNext() ? 'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{${#httpServletRequest.getRequestURI()}+ '?page=' + ${employees.number + 1}}">Tiếp</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="d-flex">
+                                    <div class="icon">
+                                        <i class="fa-regular fa-bell"></i>
+                                    </div>
+                                    <div class="box-header-modal">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cảnh báo</h1>
+                                        <p>Hành động nguy hiểm !</p>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                                        class="fa-solid fa-circle-xmark"></i></button>
+                            </div>
+                            <div class="modal-body">
+                                Bạn có chắc chắn muốn xóa nhân viên <span id="name-delete"
+                                                                              class="text-danger"></span> này không ?
+                                Hành động này sẽ không thể khôi phục lại !
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button id="active-delete" type="submit" class="btn btn-danger">
+                                    <a id="delete" style="color: white;text-decoration: none">Xóa</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+<script>
+    function sendDataModal(id, name) {
+        $("#name-delete").html(name)
+        $("#delete").attr("href", "/dashboard/employee/delete/" + id)
+    }
+</script>
+</body>
+</html>

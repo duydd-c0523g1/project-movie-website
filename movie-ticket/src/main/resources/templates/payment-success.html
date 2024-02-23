@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <div class="row">
+        <section id="banner-detail">
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <div class="card text-bg-dark">
+                        <img th:src="${booking.showTime.movie.banner}" class="card-img"
+                             th:alt="${'Banner '+booking.showTime.movie.title}" height="700px">
+                        <div class="card-img-overlay d-flex align-items-center">
+                            <div class="col-lg-5 text-center">
+                                <img class="w-75" th:src="${booking.showTime.movie.avatar}" th:alt="${'Ảnh đại diện '+booking.showTime.movie.title}">
+                            </div>
+                            <div class="col-lg-7">
+                                <h3 class="display-5 fw-bold">Đặt mua vé thành công</h3>
+                                <p class="text-secondary-custom">Cảm ơn bạn đã đặt vé xem phim!</p>
+                                <div class="mb-3 row">
+                                    <label for="idBooking" class="col-sm-4 col-form-label">ID Đơn Hàng</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" readonly class="form-control-plaintext" id="idBooking"
+                                               th:value="${booking.codeBooking}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="movieBooking" class="col-sm-4 col-form-label">Tên phim:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" readonly class="form-control-plaintext" id="movieBooking"
+                                               th:value="${booking.showTime.movie.title}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="categoryMovie" class="col-sm-4 col-form-label">Thể loại phim:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" readonly class="form-control-plaintext" id="categoryMovie"
+                                               th:value="${booking.showTime.movie.category.nameCategory}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="datePurchased" class="col-sm-4 col-form-label">Ngày mua:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" readonly class="form-control-plaintext" id="datePurchased"
+                                               th:value="${booking.datePurchased}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="price" class="col-sm-4 col-form-label">Giá vé xem phim:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" readonly class="form-control-plaintext" id="price"
+                                               th:value="${#numbers.formatDecimal(booking.showTime.price, 0, 'POINT', 0, 'COMMA')} + ' đ'">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="timeStart" class="col-sm-4 col-form-label">Suất chiếu</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" readonly class="form-control-plaintext" id="timeStart"
+                                               th:value="${booking.showTime.startTime + ' '+booking.showTime.showDate}">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="seats" class="col-sm-4 col-form-label">Ghế bạn đã mua</label>
+                                    <div class="col-sm-8">
+                                        <div class="row">
+                                            <div>
+                                                <p type="text" readonly class="form-control-plaintext" id="seats" th:text="${#strings.listJoin(seatBookings,', ')}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="totalPrice" class="col-sm-4 col-form-label">Tổng tiền thanh toán:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" readonly class="form-control-plaintext" id="totalPrice" th:value="${#numbers.formatDecimal(booking.totalPrice, 0, 'POINT', 0, 'COMMA')} + ' đ'">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <a href="/" class="btn btn-primary">Quay lại trang chính</a>
+    </div>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

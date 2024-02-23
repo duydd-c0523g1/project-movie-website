@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard user-purchased">
+                <h3 th:text="${'Xem chi tiết khách hàng : ' + customer.fullName}" class="my-4"></h3>
+                <div class="mb-3 row">
+                    <label for="inputNameCategory" class="col-sm-2 col-form-label">ID khách hàng</label>
+                    <div class="col-sm-10"style="color: #848484">
+                        <input type="text" readonly class="form-control-plaintext" id="inputNameCategory"
+                               th:text="${customer.id}" >
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="movieBooking" class="col-sm-2 col-form-label">Tên khách hàng</label>
+                    <div class="col-sm-10"style="color: #848484">
+                        <input type="text" readonly class="form-control-plaintext" id="movieBooking"
+                               th:text="${customer.fullName}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="categoryMovie" class="col-sm-2 col-form-label">Địa chỉ khách hàng</label>
+                    <div class="col-sm-10"style="color: #848484">
+                        <input type="text" readonly class="form-control-plaintext" id="categoryMovie"
+                               th:text="${customer.address}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="datePurchased" class="col-sm-2 col-form-label">Gmail khách hàng</label>
+                    <div class="col-sm-10"style="color: #848484">
+                        <input type="text" readonly class="form-control-plaintext" id="datePurchased"
+                               th:text="${customer.email}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="price" class="col-sm-2 col-form-label">Ngày tháng năm sinh</label>
+                    <div class="col-sm-10"style="color: #848484">
+                        <input type="text" readonly class="form-control-plaintext" id="price"
+                               th:text="${customer.birthday}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="timeStart" class="col-sm-2 col-form-label">Số điện thoại khách hàng</label>
+                    <div class="col-sm-10"style="color: #848484">
+                        <input type="text" readonly class="form-control-plaintext" id="timeStart"
+                               th:text="${customer.phoneNumber}">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="phone" class="col-sm-2 col-form-label">Số CCCD/CMND khách hàng</label>
+                    <div class="col-sm-10" style="color: #848484">
+                        <input type="text" readonly class="form-control-plaintext" id="phone"
+                               th:text="${customer.phoneNumber}">
+                    </div>
+                </div>
+
+                <div class="col-sm-12 d-flex justify-content-center" >
+                    <button type="button" class="btn btn-primary" style="background: #E20442 ;width: 242px">
+                        <a th:href="@{/dashboard/customer}" style="text-decoration: none ; color: white ">Quay lại</a>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

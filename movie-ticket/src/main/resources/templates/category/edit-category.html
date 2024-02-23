@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard category">
+                <h3 th:text="${'Chỉnh sửa danh mục phim ' + category.id}">Chỉnh sửa danh mục phim</h3>
+                <form class="edit-item my-4" th:object="${category}" method="post">
+                    <div class="row mb-3">
+                        <label for="inputNameCategory" class="col-sm-2 col-form-label">Chỉnh sửa tên danh mục</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{nameCategory}" type="text" class="form-control" id="inputNameCategory" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Chỉnh sửa hình ảnh danh mục</label>
+                        <div class="col-sm-10">
+                            <div>
+                                <input class="form-control" type="file" id="upload-file" multiple
+                                       accept=".jpg, .jpeg, .png" onchange="limitFiles(this,1)">
+                                <input name="image2" type="hidden" id="image2" th:field="*{image}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="preview-image-add" class="row mb-3">
+                        <div class="col-sm-2"><label class="col-form-label">Hình ảnh xem trước</label></div>
+                        <div class="col-sm-10">
+                            <div id="image-preview-container2" class="img-thumbnail">
+                                <img th:src="*{image}" alt="image chose" src=""/>
+                                <input type="hidden" th:value="*{image}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+<script>
+    function limitFiles(input, maxFiles) {
+        if (input.files.length > maxFiles) {
+            alert(`Chỉ được chọn đúng ${maxFiles} tệp.`);
+            input.value = ""; // Xóa tệp đã chọn nếu vượt quá giới hạn
+        }
+    }
+
+    document.getElementById("upload-file").addEventListener("change", function (e) {
+        const container = document.getElementById("image-preview-container2");
+        container.innerHTML = "";
+        const maxFiles = 1;
+        const files = e.target.files;
+        if (files.length !== maxFiles) {
+            alert(`Bạn phải chọn đúng ${maxFiles} tệp.`);
+            e.target.value = "";
+            return;
+        }
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.style.width = "300px"
+            img.style.height = "150px"
+            container.appendChild(img);
+        }
+    });
+</script>
+<script type="module" src="/js/configulation.js"></script>
+<script type="module" src="/js/upload.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+</body>
+</html>

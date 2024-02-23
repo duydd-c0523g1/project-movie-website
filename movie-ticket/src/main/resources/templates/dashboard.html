@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="~{layout::head}">
+
+  <link rel="stylesheet" type="text/css" href="/css/chart.css">
+</head>
+<body>
+<div class="container">
+  <header th:replace="~{layout::header}"></header>
+<!--  Danh cho role User-->
+  <section sec:authorize="hasRole('USER') && !hasRole('ADMIN')">
+    <div class="row my-5 dashboard-user">
+      <div class="col-lg-3 sidebar-user">
+          <div th:replace="~{layout::sidebar-user}"></div>
+      </div>
+      <div class="col-lg-7 ms-3">
+        <div class="d-flex">
+          <div class="avatar-user">
+            <img src="https://github.com/mdo.png" alt="mdo" width="100px" height="100px" class="rounded-circle">
+          </div>
+          <div class="info-user">
+            <h3 th:text="${account.customer.fullName}">Phạm Văn Thành</h3>
+            <p th:text="${'@'+account.username}">@thanhpv</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="info col-lg-4">
+            <h4>Họ và tên</h4>
+            <p class="text-secondary-custom" th:text="${account.customer.fullName}">Phạm Văn Thành</p>
+          </div>
+          <div class="info col-lg-4">
+            <h4>Số điện thoại</h4>
+            <p class="text-secondary-custom" th:text="${account.customer.phoneNumber}">0987 654 321</p>
+          </div>
+          <div class="info col-lg-4">
+            <h4>Email</h4>
+            <p class="text-secondary-custom" th:text="${account.customer.email}">phamthanhx18@gmail.com</p>
+          </div>
+          <div class="info col-lg-4">
+            <h4>Birthday</h4>
+            <p class="text-secondary-custom" th:text="${account.customer.birthday}">01/01/2001</p>
+          </div>
+          <div class="info col-lg-4">
+            <h4>Số CMND/CCCD</h4>
+            <p class="text-secondary-custom" th:text="${account.customer.idCard}">187800000000</p>
+          </div>
+          <div class="info col-lg-4">
+            <h4>Địa chỉ</h4>
+            <p class="text-secondary-custom" th:text="${account.customer.address}">282 Trần Hưng Đạo, Sơn Trà, Đà Nẵng</p>
+          </div>
+        </div>
+        <div class="row">
+<!--          <button type="button" class="btn btn-primary"></button>-->
+        </div>
+      </div>
+    </div>
+  </section>
+<!--  Danh cho role Admin-->
+  <section sec:authorize="hasRole('ADMIN')">
+    <div class="row my-5 dashboard-admin">
+      <div class="col-lg-3 sidebar-admin">
+        <div th:replace="~{layout::sidebar-admin}"></div>
+      </div>
+      <div class="col-lg-9 ps-5">
+        <h3>Thống kê doanh thu</h3>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="overview">
+              <h5>Hôm nay</h5>
+              <p class="profit" th:text="${#numbers.formatDecimal(totalDate, 0, 'POINT', 0, 'COMMA')} + ' đ'">1.600.000 đ</p>
+              <p class="number-order" th:text="${countDate + ' đơn đặt hàng'}">32 đơn đặt hàng</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="overview">
+              <h5>Tháng này</h5>
+              <p class="profit" th:text="${#numbers.formatDecimal(totalMonth, 0, 'POINT', 0, 'COMMA')} + ' đ'">32.600.000 đ</p>
+              <p class="number-order" th:text="${countMonth + ' đơn đặt hàng'}">650 đơn đặt hàng</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="overview">
+              <h5>Năm nay</h5>
+              <p class="profit" th:text="${#numbers.formatDecimal(totalYear, 0, 'POINT', 0, 'COMMA')} + ' đ'">350.600.000 đ</p>
+              <p class="number-order" th:text="${countYear + ' đơn đặt hàng'}">7012 đơn đặt hàng</p>
+            </div>
+          </div>
+          <div class="container">
+            <canvas id="canvas"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+<script type="text/javascript" src="/js/chart.js"></script>
+</body>
+</html>

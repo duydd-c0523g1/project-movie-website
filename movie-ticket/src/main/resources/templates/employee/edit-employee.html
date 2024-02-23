@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard category">
+                <h3 th:text="${'Chỉnh sửa nhân viên ' + employeeDTO.fullName}">Chỉnh sửa danh mục phim</h3>
+                <form class="edit-item my-4" th:object="${employeeDTO}" method="post">
+                    <div class="row mb-3">
+                        <label for="fullName" class="col-sm-2 col-form-label">Chỉnh sửa tên Nhân Viên</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{fullName}" type="text" class="form-control" id="fullName" required>
+                            <p class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name Error</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="email" class="col-sm-2 col-form-label">Chỉnh sửa Email </label>
+                        <div class="col-sm-10">
+                            <input th:field="*{email}" type="text" class="form-control" id="email" required>
+                            <p class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="phoneNumber" class="col-sm-2 col-form-label">Chỉnh sửa SĐT </label>
+                        <div class="col-sm-10">
+                            <input th:field="*{phoneNumber}" type="text" class="form-control" id="phoneNumber" required>
+                            <p class="field-error" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Name Error</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="birthday" class="col-sm-2 col-form-label">Chỉnh sửa Ngày, tháng, năm sinh</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{birthday}" type="date" class="form-control" id="birthday" required>
+                            <p class="field-error" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="idCard" class="col-sm-2 col-form-label">Chỉnh sửa ID Card</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{idCard}" type="number" class="form-control" id="idCard" required>
+                            <p class="field-error" th:if="${#fields.hasErrors('idCard')}" th:errors="*{idCard}">Name Error</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="address" class="col-sm-2 col-form-label">Chỉnh sửa Địa chỉ</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{address}" type="text" class="form-control" id="address" required>
+                            <p class="field-error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Name Error</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="account" class="col-sm-2 col-form-label">Account:</label>
+                        <div class="col-sm-10">
+                            <select type="text" class="form-select" id="account" th:field="*{account}">
+                                <option th:each="item:${accountList}" th:text="${item.username}" th:value="${item.id}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Sửa thông tin</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

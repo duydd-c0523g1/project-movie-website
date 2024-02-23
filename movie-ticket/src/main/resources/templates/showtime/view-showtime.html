@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard order">
+                <a href="/dashboard/movies"><h2 style="text-align: center;" th:text="${movie.title}"><i class="fa-solid fa-arrow-left"></i>Tên phim</h2></a>
+                <div class="create">
+                    <a th:href="@{/dashboard/showtime/add/__${movie.id}__}"><i class="fa-solid fa-square-plus"></i> Thêm
+                        suất chiếu</a>
+                </div>
+                <div class="table-main" style="height: 380px;">
+<!--                    <div class="search-table">-->
+<!--                        <form action="/dashboard/movies/search">-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-lg-5">-->
+<!--                                    <div class="col-lg-6 form-floating mb-3">-->
+<!--                                        <input type="date" class="form-control" id="idCategory" name="dateSearch"-->
+<!--                                               placeholder="Chọn ngày" disabled>-->
+<!--                                        <label for="idCategory"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo-->
+<!--                                            ngày chiếu</label>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="col-lg-7 d-flex justify-content-end">-->
+<!--                                    <div class="col-auto form-floating mb-3 me-3">-->
+<!--                                        <input type="text" class="form-control" id="nameCategory" name="phoneSearch"-->
+<!--                                               placeholder="Nhập số điện thoại" disabled>-->
+<!--                                        <label for="nameCategory"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo-->
+<!--                                            ngày chiếu</label>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-lg-2 form-floating mb-3">-->
+<!--                                        <input type="submit" class="form-control btn btn-primary" value="Tìm" disabled>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+                    <table class="table table-hover" style="text-align: center">
+                        <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">KHUNG GIỜ CHIẾU</th>
+                            <th scope="col">NGÀY CHIẾU</th>
+                            <th scope="col">NHÂN VIÊN TRỰC</th>
+                            <th scope="col">GIÁ TIỀN</th>
+                            <th scope="col" style="text-align: center">THAO TÁC</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="6" style="text-align: center" th:if="${showtimeList.isEmpty()}">Không có kết
+                                quả
+                            </td>
+                        </tr>
+                        <tr th:each="showtime, count : ${showtimeList}" th:unless="${showtimeList.isEmpty()}">
+                            <td th:text="${(showtimeList.number)*showtimeList.pageable.pageSize+count.count}">#12921
+                            </td>
+                            <td th:text="${showtime.startTime + ' - ' + showtime.endTime}">Vầng Trăng Máu</td>
+                            <td th:text="${showtime.showDate}">15h30 28/10/2023</td>
+                            <td><a th:href="@{/dashboard/employee/view/__${showtime.employee.id}__}"
+                                   th:text="${showtime.employee.fullName}"></a></td>
+                            <td th:text="${showtime.price}">100000</td>
+
+                            <td style="text-align: center">
+                                <!--                                <a th:href="@{/dashboard/movies/detail/__${movie.id}__}" title="Xem chi tiết"><i-->
+                                <!--                                        class="fa-solid fa-file-lines"></i></a>-->
+                                <a th:href="@{/dashboard/showtime/update/__${showtime.id}__}" title="Sửa"><i
+                                        class="fa-solid fa-pen-to-square"></i></a>
+                                <!--<a th:href="@{/dashboard/movies/delete/__${movie.id}__}" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>-->
+                                <a data-bs-target="#exampleModal" data-bs-toggle="modal"
+                                   role="button"
+                                   th:attr="onclick=|sendDataModal('${showtime.id}','${showtime.showDate}')|"
+                                   title="Xóa"><i
+                                        class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation example" th:unless="${showtimeList.isEmpty()}">
+                    <ul class="pagination justify-content-center">
+                        <li th:class="${showtimeList.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{
+                            ${#httpServletRequest.getRequestURI()}+ '?page=' +
+                            ${showtimeList.number - 1}
+                            }">Trước</a>
+                        </li>
+                        <li th:class="${i == showtimeList.number ? 'page-item active' : 'page-item'}"
+                            th:each="i : ${#numbers.sequence(0, showtimeList.totalPages - 1)}">
+                            <a class="page-link" th:href="@{
+                            ${#httpServletRequest.getRequestURI()} + '?page=' + ${i}
+                            }" th:text="${i + 1}"></a>
+                        </li>
+                        <li th:class="${showtimeList.hasNext() ? 'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{
+                            ${#httpServletRequest.getRequestURI()} + '?page=' +
+                            ${showtimeList.number + 1}
+                            }">Sau</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex">
+                    <div class="icon">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                    <div class="box-header-modal">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cảnh báo</h1>
+                        <p>Hành động nguy hiểm !</p>
+                    </div>
+                </div>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><i
+                        class="fa-solid fa-circle-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa lịch chiếu vào ngày <span class="text-danger"
+                                                                    id="date-delete"></span> không?
+                Hành động này sẽ không thể khôi phục lại!
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Đóng</button>
+                <a class="btn btn-danger" id="active-delete" role="button">Xóa</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout::footer}"></footer>
+<script>
+    function sendDataModal(id, date) {
+        $("#date-delete").html(date)
+        $("#active-delete").attr("href", "/dashboard/showtime/delete/" + id)
+    }
+</script>
+</body>
+</html>

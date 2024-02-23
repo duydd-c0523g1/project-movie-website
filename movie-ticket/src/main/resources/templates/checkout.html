@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section id="check-out">
+        <form action="/payment" method="post">
+            <div class="row my-5">
+                <div class="col-lg-6 info-user">
+                    <h2>Thông tin khách hàng</h2>
+                    <div class="mb-3">
+                        <input type="hidden" name="customer" th:value="${account.customer.id}">
+                        <label for="full-name" class="form-label">Họ và tên khách hàng</label>
+                        <input id="full-name" type="text" class="form-control" th:value="${account.customer.fullName}" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email-customer" class="form-label">Địa chỉ email</label>
+                        <input id="email-customer" type="email" class="form-control" th:value="${account.customer.email}" aria-describedby="emailHelp">
+                        <div class="form-text">Chúng tôi sẽ đảm bảo an toàn cho thông tin của bạn</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="tel" class="form-control" id="phone" th:value="${account.customer.phoneNumber}">
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="confirm-payment">
+                        <label class="form-check-label" for="confirm-payment">Bạn đồng ý với chính sách sử dụng dữ liệu
+                            của chúng tôi</label>
+                    </div>
+                </div>
+                <div class="col-lg-6 info-order">
+                    <div class="row">
+                        <input type="hidden" name="showTimeOrder" th:value="${showTime.id}">
+                        <div class="col-lg-4">
+                            <img th:src="${showTime.movie.avatar}" th:alt="${showTime.movie.title}">
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="info-film">
+                                <h4 th:text="${showTime.movie.title}">Cú Máy Ăn Tiền</h4>
+                                <p th:text="${'Đạo diễn '+showTime.movie.director}">Cobweb · 2023 · 135 phút</p>
+                            </div>
+
+                            <div class="show-time-info">
+                                <h5>Ngày chiếu</h5>
+                                <p th:text="${showTime.showDate}">13/10/2023</p>
+                                <div class="info">
+                                    <h5 th:text="${showTime.startTime}">15:30 - 17:30</h5>
+                                </div>
+                            </div>
+
+                            <div class="seats-select mt-3">
+                                <h5>Ghế đã chọn</h5>
+                                <div class="example user-select">
+                                    <div class="box" th:each="item: ${seats}">
+                                        <input th:id="${item}" checked name="seatSelect" type="checkbox" class="btn-check" th:value="${item}" th:text="${item}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-lg-6">
+                            <p class="text-secondary-custom text-start">Giá vé</p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="text-secondary-custom text-end"
+                               th:text="${#numbers.formatDecimal(showTime.price, 0, 'POINT', 0, 'COMMA')} + ' đ'">
+                                100.000 đ</p>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-lg-6">
+                            <p class="text-secondary-custom text-start">Số lượng</p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="text-secondary-custom text-end" th:text="${seats.length}"></p>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-lg-12">
+                            <hr>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="text-secondary-custom text-start">Tổng cộng</p>
+                        </div>
+                        <div class="col-lg-6">
+                            <th:block th:with="var = ${showTime.price * seats.length}">
+                                <p class="text-secondary-custom text-end"
+                                   th:text="${#numbers.formatDecimal(var, 0, 'POINT', 0, 'COMMA')} + ' đ'">
+                                    100.000 đ
+                                </p>
+                                <input type="hidden" name="totalPrice" th:value="${var}">
+                            </th:block>
+                        </div>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-lg-12">
+                            <h5>Phương thức thanh toán</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment" id="banking"
+                                       value="vnpay">
+                                <label class="form-check-label" for="banking">
+                                    Thanh toán bằng VNPay
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment" id="card-payment"
+                                       value="momo">
+                                <label class="form-check-label" for="card-payment">
+                                    Thanh toán qua momo
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-primary w-100">Tiếp tục</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>Movie24h - Đặt mua vé xem phim trực tuyến</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/libs/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="icon" type="image/x-icon" href="/image/favicon.png">
+    <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+<body>
+<div th:fragment="sidebar-admin">
+    <h4>MENU</h4>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item active"><a href="/dashboard"><i class="fa-solid fa-gauge-high"></i> Tổng quan</a></li>
+        <li class="list-group-item"><a href="/dashboard/booking"><i class="fa-solid fa-ticket"></i> Quản lý đơn hàng</a></li>
+        <li class="list-group-item"><a href="/dashboard/movies"><i class="fa-solid fa-clapperboard"></i> Quản lý phim</a></li>
+        <li class="list-group-item"><a href="/dashboard/category"><i class="fa-solid fa-bookmark"></i> Quản lý danh
+            mục phim</a></li>
+        <li class="list-group-item"><a href="/dashboard/employee"><i class="fa-solid fa-user-pen"></i></i> Quản lý nhân viên</a></li>
+        <li class="list-group-item"><a href="/dashboard/customer/"><i class="fa-solid fa-users-viewfinder"></i></i> Quản lý khách hàng</a>
+        </li>
+        <li class="list-group-item"><a href="/dashboard/posts"><i class="fa-solid fa-file-lines"></i></i> Quản lý bài viết</a></li>
+        <li class="list-group-item">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#logOutAdmin"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+        </li>
+    </ul>
+    <div class="modal fade" id="logOutAdmin" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex">
+                        <div class="icon">
+                            <i class="fa-regular fa-bell"></i>
+                        </div>
+                        <div class="box-header-modal">
+                            <h1 class="modal-title fs-5" id="logOutAdminLabel">Thông báo</h1>
+                            <p>Thông báo quan trọng !</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                            class="fa-solid fa-circle-xmark"></i></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn đăng xuất tài khoản này không ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <a type="button" href="/logout" class="btn btn-danger">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:fragment="sidebar-user">
+    <h4>MENU</h4>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="/dashboard"><i class="fa-solid fa-circle-info"></i> Thông tin cá nhân</a></li>
+        <li class="list-group-item"><a href="/dashboard/purchased"><i class="fa-solid fa-ticket"></i> Vé xem phim đã mua</a></li>
+        <li class="list-group-item">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#logOut"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+        </li>
+    </ul>
+    <div class="modal fade" id="logOut" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex">
+                        <div class="icon">
+                            <i class="fa-regular fa-bell"></i>
+                        </div>
+                        <div class="box-header-modal">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                            <p>Thông báo quan trọng !</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                            class="fa-solid fa-circle-xmark"></i></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn đăng xuất tài khoản này không ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <a type="button" href="/logout" class="btn btn-danger">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<header th:fragment="header" class="my-3">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <a class="navbar-brand" href="/">
+            <img src="/image/logo-MOVIES24H.png" alt="Logo Website">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Lịch chiếu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Top phim</a>
+                </li>
+            </ul>
+            <form class="d-flex px-3" role="search" action="/search">
+                <input type="search" class="form-control" name="search-film" placeholder="Tìm kiếm" aria-label="Search">
+            </form>
+            <div sec:authorize="isAuthenticated()" class="d-flex">
+                <div class="avatar-user">
+                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                </div>
+                <div class="info-user-header">
+                    <div class="dropdown d-flex justify-content-end">
+                        <button class="btn-login btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-expanded="false" sec:authentication="name">
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="/dashboard">Tổng quan</a></li>
+                            <li sec:authorize="hasRole('USER') && !hasRole('ADMIN')"><a class="dropdown-item" href="/dashboard/purchased">Vé đã mua</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div sec:authorize="!isAuthenticated()" id="modal-login">
+                <a class="btn-login btn btn-primary" data-bs-toggle="modal" href="#userLogin" role="button">Đăng
+                    nhập</a>
+                <div class="modal fade" id="userSignup" aria-hidden="true" aria-labelledby="userSignupLabel"
+                     tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div id="sign-up" class="wrapper">
+                                <div class="form">
+                                    <form id="form-signup">
+                                        <div class="card text-bg-dark">
+                                            <img src="/image/5b636a2a0d9e069d6a5852547ea877e7.png" class="card-img"
+                                                 alt="...">
+                                            <div class="card-img-overlay" style="padding: 50px;">
+                                                <div class="logo-website text-center mb-4">
+                                                    <img class="text-center" src="/image/logo-MOVIES24H.png" alt="">
+                                                </div>
+                                                <div class="text-center">
+                                                    <h3>Đăng kí</h3>
+                                                    <p>Tạo tài khoản để có thể sử dụng toàn bộ các dịch vụ của chúng
+                                                        tôi</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="usernameSignUp" class="form-label">Tên đăng nhập</label>
+                                                    <input id="usernameSignUp" type="text" class="form-control">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="passwordSignUp" class="form-label">Mật khẩu</label>
+                                                    <input id="passwordSignUp" type="password" class="form-control">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="emailSignUp" class="form-label">Email</label>
+                                                    <input id="emailSignUp" type="email" class="form-control">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="confirmEmailSignUp" class="form-label">Nhập lại
+                                                        email</label>
+                                                    <input id="confirmEmailSignUp" type="email" class="form-control">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <button type="submit" class="btn btn-primary w-100">Đăng kí</button>
+                                                </div>
+                                                <div class="col-lg-12 my-3">
+                                                    <p class="text-secondary-custom">Bạn đã có tài khoản, <a
+                                                            style="color: #E20442" data-bs-target="#userLogin"
+                                                            data-bs-toggle="modal" data-bs-dismiss="modal"
+                                                            role="button">đăng nhập tại đây</a></p>
+                                                    <p>Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn đồng ý với
+                                                        điều khoản sử dụng của chúng tôi</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="userLogin" aria-hidden="true" aria-labelledby="userLoginLabel"
+                     tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div id="log-in" class="wrapper">
+                                <form id="form-login" action="/login" method="post">
+                                    <div class="card text-bg-dark">
+                                        <img src="/image/5b636a2a0d9e069d6a5852547ea877e7.png" class="card-img"
+                                             alt="...">
+                                        <div class="card-img-overlay" style="padding: 50px;">
+                                            <!--                                            <div class="btn-close-form text-end">-->
+                                            <!--                                                <button type="button" class="btn-close" data-bs-dismiss="modal"-->
+                                            <!--                                                        aria-label="Close"></button>-->
+                                            <!--                                            </div>-->
+                                            <div class="logo-website text-center mb-4">
+                                                <img class="text-center" src="/image/logo-MOVIES24H.png" alt="">
+                                            </div>
+                                            <div class="text-center">
+                                                <h3>Đăng nhập</h3>
+                                                <p>Vui lòng đăng nhập để có thể sử dụng toàn bộ các dịch vụ của chúng
+                                                    tôi</p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="usernameLogIn" class="form-label">Tên đăng nhập</label>
+                                                <input id="usernameLogIn" type="text" class="form-control" name="username">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="passwordLogIn" class="form-label">Mật khẩu</label>
+                                                <input id="passwordLogIn" type="password" class="form-control" name="password">
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <button type="submit" class="btn btn-primary w-100">Tiếp tục</button>
+                                            </div>
+                                            <div class="col-lg-12 my-3">
+                                                <p class="text-secondary-custom">Bạn chưa có tài khoản, <a
+                                                        style="color: #E20442" data-bs-target="#userSignup"
+                                                        data-bs-toggle="modal" data-bs-dismiss="modal"
+                                                        role="button">đăng kí tại đây</a></p>
+                                                <p>Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn đồng ý với
+                                                    điều khoản sử dụng của chúng tôi</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<footer th:fragment="footer">
+    <div class="container">
+        <div class="row mt-4 align-items-end">
+            <div class="col-lg-4">
+                <img class="my-2" src="/image/logo-MOVIES24H.png" alt="">
+                <p class="">Công ty cổ phần dịch vụ Movies 24H</p>
+                <p>Địa chỉ: Số 123, Đường ABC, Thành phố XYZ</p>
+                <p>Số điện thoại: 0123456789</p>
+                <p>Email: info@movies24h.com</p>
+            </div>
+            <div class="col-lg-3">
+                <p>Liên kết nhanh</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="#">Trang chủ</a></li>
+                    <li class="list-group-item"><a href="#">Vé xem phim</a></li>
+                    <li class="list-group-item"><a href="#">Lịch chiếu</a></li>
+                    <li class="list-group-item"><a href="#">Tin tức</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2">
+                <p>Mạng xã hội</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="#">Facebook</a></li>
+                    <li class="list-group-item"><a href="#">Instagram</a></li>
+                    <li class="list-group-item"><a href="#">Linkedin</a></li>
+                    <li class="list-group-item"><a href="#">Youtube</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3">
+                <p>Chính sách</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="#">Chính sách bảo mật</a></li>
+                    <li class="list-group-item"><a href="#">Chính sách dữ liệu</a></li>
+                    <li class="list-group-item"><a href="#">Điều khoản sử dụng</a></li>
+                    <li class="list-group-item"><a href="#">Chính sách thông tin</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row text-center my-5">
+            <p>© 2023 Movies24h. Tất cả các quyền đã được bảo lưu.</p>
+        </div>
+    </div>
+    <div th:fragment="js">
+        <script src="/js/jquery-3.7.1.min.js"></script>
+        <script src="/libs/tinymce/tinymce.min.js"></script>
+        <script src="/libs/bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="/js/main.js"></script>
+    </div>
+</footer>
+</body>
+</html>

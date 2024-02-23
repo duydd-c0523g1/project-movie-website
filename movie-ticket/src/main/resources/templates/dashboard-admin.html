@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+  <header th:replace="~{layout::header}"></header>
+  <section>
+    <div class="row my-5 dashboard-admin">
+      <div class="col-lg-3 sidebar-admin">
+        <div th:replace="~{layout::sidebar-admin}"></div>
+      </div>
+      <div class="col-lg-9 ps-5">
+        <h3>Thống kê doanh thu</h3>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="overview">
+              <h5>Hôm nay</h5>
+              <p class="profit">1.600.000 đ</p>
+              <p class="number-order">32 đơn đặt hàng</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="overview">
+              <h5>Tháng này</h5>
+              <p class="profit">32.600.000 đ</p>
+              <p class="number-order">650 đơn đặt hàng</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="overview">
+              <h5>Năm nay</h5>
+              <p class="profit">350.600.000 đ</p>
+              <p class="number-order">7012 đơn đặt hàng</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

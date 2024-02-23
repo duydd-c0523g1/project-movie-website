@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+
+<div class="container" style="margin-top: 40px">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard category">
+                <div class="create mb-4">
+                    <a href="/dashboard/movies"><i class="fa-solid fa-arrow-left"></i> &nbsp; Quay lại</a>
+                </div>
+                <h3>Thêm mới phim</h3>
+                <form action="/dashboard/movies/confirm-update" method="post" th:object="${movieDto}">
+                    <input hidden="hidden" name="id" th:field="*{id}" type="number">
+                    <div class="mb-3">
+                        <label class="form-label" for="title">Tên phim <sub style="color: red">( * )</sub></label>
+                        <input class="form-control" id="title" th:field="*{title}" type="text" required>
+                        <p style="color: #e20442" th:errors="*{title}" th:if="${#fields.hasErrors('title')}"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="director">Đạo diễn <sub style="color: red">( * )</sub></label>
+                        <input class="form-control" id="director" th:field="*{director}" type="text" required>
+                        <p style="color: #e20442" th:errors="*{director}" th:if="${#fields.hasErrors('director')}"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="release">Ngày công chiếu <sub style="color: red">( * )</sub></label>
+                        <input class="form-control" id="release" th:field="*{releaseDate}" type="date" required>
+                        <p style="color: #e20442" th:errors="*{releaseDate}"
+                           th:if="${#fields.hasErrors('releaseDate')}"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="category">Thể loại <sub style="color: red">( * )</sub></label>
+                        <select aria-label="Default select example" class="form-select" name="category"
+                                th:field="*{category}" id="category">
+                            <option th:each="category : ${categoryList}" th:text="${category.nameCategory}"
+                                    th:value="${category.id}">Open this select menu
+                            </option>
+                        </select>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <div>
+                                <label for="image2" class="col-sm-2 col-form-label">Ảnh phim <sub style="color: red">( * )</sub></label>
+                                <input accept=".jpg, .jpeg, .png" class="form-control" id="upload-file" multiple
+                                       onchange="limitFiles(this,1)" type="file">
+                                <input id="image2" name="image2" required th:value="${movieDto.avatar}" th:field="*{avatar}" type="hidden">
+                                <p style="color: #e20442" th:errors="*{avatar}" th:if="${#fields.hasErrors('avatar')}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3" id="preview-image-add">
+                        <div class="col-sm-2"><label class="col-form-label">Ảnh phim xem trước</label></div>
+                        <div class="col-sm-10">
+                            <div class="img-thumbnail" id="image-preview-container2">
+                                <img height="150px" alt="image chose" src="" th:src="*{avatar}"/>
+                                <input required th:value="*{avatar}" type="hidden">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <div>
+                                <label for="image3" class="col-sm-2 col-form-label">Ảnh bìa <sub style="color: red">( * )</sub></label>
+                                <input accept=".jpg, .jpeg, .png" class="form-control" id="upload-banner" multiple
+                                       onchange="limitFiles(this,1)" type="file">
+                                <input id="image3" name="image3" required th:value="${movieDto.banner}" th:field="*{banner}" type="hidden">
+                                <p style="color: #e20442" th:errors="*{banner}" th:if="${#fields.hasErrors('banner')}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3" id="preview-banner-add">
+                        <div class="col-sm-2"><label class="col-form-label">Ảnh bìa xem trước</label></div>
+                        <div class="col-sm-10">
+                            <div class="img-thumbnail" id="image-preview-banner">
+                                <img height="150px" alt="image chose" src="" th:src="*{banner}"/>
+                                <input required th:value="*{banner}" type="hidden">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Mô tả phim <sub style="color: red">( * )</sub></label>
+                        <textarea style="width: 100%" id="description" th:field="*{description}" required></textarea>
+                        <p style="color: #e20442" th:errors="*{description}"
+                           th:if="${#fields.hasErrors('description')}"></p>
+                    </div>
+                    <div class="mb3">
+                        <input class="btn btn-primary" type="submit" value="Xác nhận">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+<div th:replace="~{layout::js}"></div>
+<script>
+    function limitFiles(input, maxFiles) {
+        if (input.files.length > maxFiles) {
+            alert(`Chỉ được chọn đúng ${maxFiles} tệp.`);
+            input.value = ""; // Xóa tệp đã chọn nếu vượt quá giới hạn
+        }
+    }
+
+    document.getElementById("upload-file").addEventListener("change", function (e) {
+        const container = document.getElementById("image-preview-container2");
+        container.innerHTML = "";
+        const maxFiles = 1;
+        const files = e.target.files;
+        if (files.length !== maxFiles) {
+            alert(`Bạn phải chọn đúng ${maxFiles} tệp.`);
+            e.target.value = "";
+            return;
+        }
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.style.width = "300px"
+            img.style.height = "150px"
+            container.appendChild(img);
+        }
+    });
+</script>
+<script>
+    document.getElementById("upload-banner").addEventListener("change", function (e) {
+        const container = document.getElementById("image-preview-banner");
+        container.innerHTML = "";
+        const maxFiles = 1;
+        const files = e.target.files;
+        if (files.length !== maxFiles) {
+            alert(`Bạn phải chọn đúng ${maxFiles} tệp.`);
+            e.target.value = "";
+            return;
+        }
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.style.width = "300px"
+            img.style.height = "150px"
+            container.appendChild(img);
+        }
+    });
+</script>
+<script src="/js/configulation.js" type="module"></script>
+<script src="/js/configulation2.js" type="module"></script>
+<script src="/js/upload.js" type="module"></script>
+<script src="/js/upload2.js" type="module"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+</body>
+</html>

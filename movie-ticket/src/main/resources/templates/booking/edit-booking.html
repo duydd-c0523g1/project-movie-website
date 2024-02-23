@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard category">
+                <h3 th:text="${'Chỉnh sửa đơn hàng ' + bookingDto.codeBooking}">Chỉnh sửa đơn hàng</h3><span><button
+                    type="button" class="btn btn-warning">
+                <a type="button" th:attr="onclick=|sendDataModal('${bookingDto.id}','${bookingDto.codeBooking}')|"
+                   title="Hủy" role="button" data-bs-toggle="modal"
+                   data-bs-target="#exampleModal">Hủy đơn hàng</a></button></span>
+                <form class="edit-item my-4" action="/dashboard/booking/edit" th:object="${bookingDto}" method="post">
+                    <input type="hidden" th:field="*{id}">
+                    <input type="hidden" th:field="*{customer}">
+                    <input type="hidden" th:field="*{codeBooking}">
+                    <input type="hidden" th:field="*{showTime}">
+                    <div class="mb-3 row">
+                        <label for="customer" class="col-sm-2 col-form-label">Khách hàng</label>
+                        <div class="col-sm-10">
+                            <input type="text" readonly class="form-control-plaintext" id="customer"
+                                   th:value="${bookingDto.customer.fullName}">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="price" class="col-sm-2 col-form-label">Giá</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" id="price" th:field="*{totalPrice}">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="time" class="col-sm-2 col-form-label">Ngày mua</label>
+                        <div class="col-sm-10">
+                            <input type="text" readonly class="form-control-plaintext" id="inputTimes"
+                                   th:value="${bookingDto.showTime.showDate + ' '+bookingDto.showTime.startTime}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="datePurchased" class="col-sm-2 col-form-label">Ngày mua</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{datePurchased}" type="text" readonly class="form-control-plaintext" id="datePurchased"
+                                   th:value="${bookingDto.datePurchased}">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="seats" class="col-sm-2 col-form-label">Ghế bạn đã mua</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-lg-1" th:each="seat:${bookingDto.seatBookings}">
+                                    <input type="text" readonly class="form-control-plaintext" id="seats" th:value="${seat.seat}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <a href="/dashboard/booking">
+                            <button type="button" class="btn btn-warning">Quay Lại</button>
+                        </a>
+                        <button type="submit" class="btn btn-primary" style="margin-left: 320px">Cập Nhật</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/dashboard/booking/cancel" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex">
+                        <div class="icon">
+                            <i class="fa-regular fa-bell"></i>
+                        </div>
+                        <div class="box-header-modal">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Cảnh báo</h1>
+                            <p>Hành động nguy hiểm !</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i
+                                class="fa-solid fa-circle-xmark"></i></button>
+                </div>
+
+                <div class="modal-body">
+                    <label for="idCancel">
+                        <input type="text" hidden="hidden" name="idCancel" id="idCancel">
+                    </label>
+                    Bạn có chắc chắn muốn xóa đơn hàng <span id="name"
+                                                             class="text-danger"></span> này không
+                    Hành động này sẽ không thể khôi phục lại !
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                    </button>
+                    <button type="submit" class="btn btn-danger">Xác Nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="~{layout::footer}"></footer>
+
+<script>
+    function sendDataModal(id, name) {
+        document.getElementById("name").innerHTML = name;
+        document.getElementById("idCancel").value = id;
+    }
+</script>
+</body>
+</html>

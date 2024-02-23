@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard category">
+                <div class="create mb-4">
+                    <a href="/dashboard/movies"><i class="fa-solid fa-arrow-left"></i> &nbsp; Quản lý phim</a>
+                </div>
+                <h3 class="my-4" th:text="${'Chi tiết phim  ' + movie.title}">Xem chi tiết phim</h3>
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="row mb-3" id="preview-image-add">
+                            <div class="col-sm-12">
+                                <div class="img-thumbnail" id="image-preview-container2">
+                                    <img alt="image chose" height="auto" src="" th:src="${movie.avatar}" width="300px"/>
+                                </div>
+                                <div class="create mt-5">
+                                    <a class="btn btn-primary" data-bs-target="#exampleModal" data-bs-toggle="modal"
+                                       role="button" style="background: unset; border: 1px #848484 solid; color: #848484;"
+                                       th:attr="onclick=|sendDataModal('${movie.id}','${movie.title}')|"
+                                       title="Xóa">Xóa</a>
+                                    <a class="btn btn-primary" style="color: #fff;"
+                                       th:href="@{/dashboard/movies/update/__${movie.id}__}">Chỉnh
+                                        sửa</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="mb-3 row">
+                            <label class="col-sm-5 col-form-label" for="id">ID phim</label>
+                            <div class="col-sm-10">
+                                <input class="form-control-plaintext" id="id" readonly th:value="${movie.id}"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-5 col-form-label" for="title">Tên phim</label>
+                            <div class="col-sm-10">
+                                <input class="form-control-plaintext" id="title" readonly th:value="${movie.title}"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-5 col-form-label" for="director">Đạo diễn</label>
+                            <div class="col-sm-10">
+                                <input class="form-control-plaintext" id="director" readonly
+                                       th:value="${movie.director}"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-5 col-form-label" for="release">Ngày khởi chiếu</label>
+                            <div class="col-sm-10">
+                                <input class="form-control-plaintext" id="release" readonly
+                                       th:value="${movie.releaseDate}"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-5 col-form-label" for="category">Thể loại</label>
+                            <div class="col-sm-10">
+                                <input class="form-control-plaintext" id="category" readonly
+                                       th:value="${movie.category.nameCategory}"
+                                       type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="mb-3 row">
+                            <label class="col-sm-5 col-form-label" for="description">Mô tả</label>
+                            <div class="col-sm-12">
+                                <div id="description" th:utext="${movie.description}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex">
+                    <div class="icon">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                    <div class="box-header-modal">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cảnh báo</h1>
+                        <p>Hành động nguy hiểm !</p>
+                    </div>
+                </div>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><i
+                        class="fa-solid fa-circle-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa phim <span class="text-danger"
+                                                     id="name-delete"></span> này không?
+                Hành động này sẽ không thể khôi phục lại!
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Đóng</button>
+                <a class="btn btn-danger" id="active-delete" role="button">Xóa</a>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+<script>
+    function sendDataModal(id, name) {
+        $("#name-delete").html(name)
+        $("#active-delete").attr("href", "/dashboard/movies/delete/" + id)
+    }
+</script>
+</body>
+</html>

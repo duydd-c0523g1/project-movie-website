@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+
+<div class="container" style="margin-top: 40px">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard category">
+                <div class="create mb-4">
+                    <a href="/dashboard/posts"><i class="fa-solid fa-arrow-left"></i> &nbsp; Quay lại</a>
+                </div>
+                <h3>Chỉnh sửa bài viết</h3>
+                <form method="post" th:object="${post}">
+                    <div class="mb-3">
+                        <label class="form-label" for="title">Tiêu đề phim</label>
+                        <input class="form-control" id="title" th:field="*{title}" type="text" required>
+                        <p style="color: #e20442" th:errors="*{title}" th:if="${#fields.hasErrors('title')}"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Nội dung bài viết</label>
+                        <textarea style="width: 100%" id="description" th:field="*{content}"></textarea>
+                        <p style="color: red" th:errors="*{content}"
+                           th:if="${#fields.hasErrors('content')}"></p>
+                    </div>
+                    <div class="mb3">
+                        <input class="btn btn-primary" type="submit" value="Xác nhận">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+<div th:replace="~{layout::js}"></div>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div th:if="${success}">
+    <span th:text="${success}" id="success" style="display: none"></span>
+</div>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard order">
+                <div class="create">
+                    <a href="/dashboard/movies/add"><i class="fa-solid fa-square-plus"></i> Thêm phim mới</a>
+                </div>
+                <div class="table-main" style="height: 380px;">
+                    <div class="search-table">
+                        <form action="/dashboard/movies/search">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="col-lg-6 form-floating mb-3">
+                                        <input class="form-control" id="idMovie" name="idMovie" placeholder=""
+                                               th:value="${idMovie}" type="text">
+                                        <label for="idMovie"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo mã
+                                            phim</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7 d-flex justify-content-between">
+                                    <div class="col-auto form-floating mt-1">
+                                        <a style="font-size: 1.4em; color: #e20442" href="/dashboard/movies" title="Tải lại"><i class="fa-solid fa-rotate-right"></i></a>
+                                    </div>
+                                    <div class="col-auto form-floating mb-3">
+                                        <input class="form-control" id="nameFilm" name="nameMovie" placeholder=""
+                                               th:value="${nameMovie}" type="text" required>
+                                        <label for="nameFilm"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo tên
+                                            phim</label>
+                                    </div>
+                                    <div class="col-auto form-floating mb-3">
+                                        <input class="form-control" id="dateOrder" type="date" disabled>
+                                        <label for="dateOrder"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo
+                                            thời gian</label>
+                                    </div>
+                                    <div class="col-lg-2 form-floating mb-3">
+                                        <input class="form-control btn btn-primary" type="submit" value="Tìm">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">TÊN PHIM</th>
+                            <th scope="col">ĐẠO DIỄN</th>
+                            <th scope="col">NGÀY CÔNG CHIẾU</th>
+                            <th scope="col">DANH MỤC</th>
+                            <th scope="col" style="text-align: center">THAO TÁC</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr><td colspan="6" th:if="${movies.isEmpty()}" style="text-align: center">Không có kết quả</td></tr>
+                        <tr th:unless="${movies.isEmpty()}" th:each="movie, count : ${movies}">
+                            <td th:text="${(movies.number)*movies.pageable.pageSize+count.count}">#12921</td>
+                            <td th:text="${movie.title}">Vầng Trăng Máu</td>
+                            <td th:text="${movie.director}">Phạm Văn Thành</td>
+                            <td th:text="${movie.releaseDate}">15h30 28/10/2023</td>
+                            <td th:text="${movie.category.nameCategory}">Hành động</td>
+                            <td style="text-align: center">
+                                <a th:href="@{/dashboard/movies/detail/__${movie.id}__}" title="Xem chi tiết"><i
+                                        class="fa-solid fa-file-lines"></i></a>
+                                <a th:href="@{/dashboard/movies/update/__${movie.id}__}" title="Sửa"><i
+                                        class="fa-solid fa-pen-to-square"></i></a>
+                                <a th:href="@{/dashboard/showtime/view-showtime/__${movie.id}__}" title="Xem lịch chiếu">
+                                    <i class="fa-solid fa-calendar-week"></i></a>
+                                <!--<a th:href="@{/dashboard/movies/delete/__${movie.id}__}" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>-->
+                                <a data-bs-target="#exampleModal" data-bs-toggle="modal"
+                                   role="button" th:attr="onclick=|sendDataModal('${movie.id}','${movie.title}')|"
+                                   title="Xóa"><i
+                                        class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation example" th:unless="${movies.isEmpty()}">
+                    <ul class="pagination justify-content-center">
+                        <li th:class="${movies.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{
+                            ${#httpServletRequest.getRequestURI()}+ '?page=' +
+                            ${movies.number - 1} +
+                            ${nameMovie != null && nameMovie != '' ? '&nameMovie='+nameMovie:''} +
+                            ${idMovie != null && idMovie != '' ? '&idMovie='+idMovie:''}
+                            }">Trước</a>
+                        </li>
+                        <li th:class="${i == movies.number ? 'page-item active' : 'page-item'}"
+                            th:each="i : ${#numbers.sequence(0, movies.totalPages - 1)}">
+                            <a class="page-link" th:href="@{
+                            ${#httpServletRequest.getRequestURI()} + '?page=' + ${i} +
+                            ${nameMovie != null && nameMovie != '' ? '&nameMovie='+nameMovie:''} +
+                            ${idMovie != null && idMovie != '' ? '&idMovie='+idMovie:''}
+                            }" th:text="${i + 1}"></a>
+                        </li>
+                        <li th:class="${movies.hasNext() ? 'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{
+                            ${#httpServletRequest.getRequestURI()} + '?page=' +
+                            ${movies.number + 1} +
+                            ${nameMovie != null && nameMovie != '' ? '&nameMovie='+nameMovie:''} +
+                            ${idMovie != null && idMovie != '' ? '&idMovie='+idMovie:''}
+                            }">Sau</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex">
+                    <div class="icon">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                    <div class="box-header-modal">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cảnh báo</h1>
+                        <p>Hành động nguy hiểm !</p>
+                    </div>
+                </div>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><i
+                        class="fa-solid fa-circle-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa phim <span class="text-danger"
+                                                     id="name-delete"></span> này không?
+                Hành động này sẽ không thể khôi phục lại!
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Đóng</button>
+                <a class="btn btn-danger" id="active-delete" role="button">Xóa</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout::footer}"></footer>
+<script>
+    function sendDataModal(id, name) {
+        $("#name-delete").html(name)
+        $("#active-delete").attr("href", "/dashboard/movies/delete/" + id)
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let success = document.getElementById("success").innerText;
+        console.log(success)
+        Swal.fire({
+            title: success,
+            icon: 'success',
+            timer: 1500,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    });
+</script>
+</body>
+</html>

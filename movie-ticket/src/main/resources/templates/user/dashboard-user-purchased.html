@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <!--  Danh cho role User-->
+    <section sec:authorize="hasRole('USER') && !hasRole('ADMIN')">
+        <div class="row my-5 dashboard-user">
+            <div class="col-lg-3 sidebar-user">
+                <div th:replace="~{layout::sidebar-user}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard user-purchased">
+                <div class="table-main">
+                    <div class="search-table">
+                        <form>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="col-lg-6 form-floating mb-3">
+                                        <input type="text" class="form-control" id="codeOrder"
+                                               placeholder="name@example.com">
+                                        <label for="codeOrder"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo mã
+                                            đơn</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7 d-flex justify-content-between">
+                                    <div class="col-auto form-floating mb-3">
+                                        <input type="text" class="form-control" id="nameFilm"
+                                               placeholder="name@example.com">
+                                        <label for="nameFilm"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo tên
+                                            phim</label>
+                                    </div>
+                                    <div class="col-auto form-floating mb-3">
+                                        <input type="date" class="form-control" id="dateOrder">
+                                        <label for="dateOrder"><i class="fa-solid fa-magnifying-glass"></i> Tìm theo
+                                            thời gian</label>
+                                    </div>
+                                    <div class="col-lg-2 form-floating mb-3">
+                                        <input type="submit" class="form-control btn btn-primary" value="Tìm">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">MÃ ĐƠN HÀNG</th>
+                            <th scope="col">TÊN FILM</th>
+                            <th scope="col">NGÀY MUA</th>
+                            <th scope="col">SUẤT CHIẾU</th>
+                            <th scope="col">TỔNG TIỀN</th>
+                            <th scope="col">THAO TÁC</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item,loop: ${bookings}">
+                            <td th:text="${item.codeBooking}">#12921</td>
+                            <td th:text="${item.showTime.movie.title}">Vầng Trăng Máu</td>
+                            <td th:text="${item.datePurchased}">Phạm Văn Thành</td>
+                            <td th:text="${item.showTime.startTime + ' '+item.showTime.showDate}">15h30 28/10/2023</td>
+                            <td th:text="${#numbers.formatDecimal(item.totalPrice, 0, 'POINT', 0, 'COMMA')+' đ'}">100.000 đ</td>
+                            <td>
+                                <a th:href="@{/dashboard/purchased/view/__${item.id}__}" title="Xem chi tiết"><i class="fa-solid fa-file-lines"></i> Xem chi tiết</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li th:class="${bookings.hasPrevious() ? 'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{
+                            ${#httpServletRequest.getRequestURI()}+ '?page=' + ${bookings.number - 1}}
+                            ">Trước</a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(0, bookings.totalPages - 1)}" th:class="${i == bookings.number ? 'page-item active' : 'page-item'}">
+                            <a class="page-link" th:text="${i + 1}" th:href="@{
+                            ${#httpServletRequest.getRequestURI()} + '?page=' + ${i}}
+                            "></a>
+                        </li>
+                        <li th:class="${bookings.hasNext() ? 'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{
+                            ${#httpServletRequest.getRequestURI()} + '?page=' +
+                            ${bookings.number + 1}}
+                            ">Tiếp</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>

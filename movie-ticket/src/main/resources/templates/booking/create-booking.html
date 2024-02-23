@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+<body>
+<div class="container">
+    <header th:replace="~{layout::header}"></header>
+    <section>
+        <div class="row my-5 dashboard-admin">
+            <div class="col-lg-3 sidebar-admin">
+                <div th:replace="~{layout::sidebar-admin}"></div>
+            </div>
+            <div class="col-lg-9 ps-5 table-dashboard category">
+                <h3>Thêm mới đơn hàng</h3>
+                <form class="creat-item my-4" th:object="${bookingDto}" method="post">
+                    <div class="row mb-3">
+                        <label for="inputCustomer" class="col-sm-2 col-form-label">Tên Khách Hàng</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{customer}" type="text" class="form-control" id="inputCustomer" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputMovie" class="col-sm-2 col-form-label">Tên Phim</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{showTime.movie}" type="text" class="form-control" id="inputMovie"
+                                   list="movieOptions" required>
+                            <datalist id="movieOptions"></datalist>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+
+                        <label for="inputMovie" class="col-sm-2 col-form-label">Thời gian</label>
+                        <div class="col-sm-10">
+                            <select th:field="*{showTime.movie}" class="form-select form-select-sm"
+                                    aria-label=".form-select-sm example" id="showtimeList" >
+                                <option selected value="0" style="text-align: center;">Hãy lựa chọn một khung giờ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+<script type="module" src="/js/jquery-3.7.1.min.js"></script>
+
+<script>
+    $(document).ready(async function () {
+        $("#inputMovie").on("input", async function () {
+            let inputValue = $(this).val();
+            let movies = await getMovies(inputValue);
+        });
+
+        $("#inputMovie").on("blur", function () {
+            $("#movieOptions").hide();
+        });
+
+        async function getMovies(inputValue) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: `http://localhost:8080/api/movies?title=${inputValue}`,
+                    method: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        let options = "";
+                        for (let i = 0; i < data.length; i++) {
+                            options += `<option hidden="hidden" value="${data[i].title}">${data[i].title}</option>`;
+                        }
+                        if (options === "") {
+                            $("#movieOptions").hide();
+                        } else {
+                            $("#movieOptions").html(options).show();
+                        }
+                        resolve(data);
+                    },
+                    error: function (error) {
+                        reject(error);
+                    }
+                });
+            });
+        }
+
+        $(document).on("change", "#inputMovie", async function () {
+            let selectedTitle = $(this).val();
+
+            $("#movieOptions").hide();
+            let movies = await getMovies(selectedTitle);
+            let movieTT;
+            let movieId;
+            for (let i = 0; i < movies.length; i++) {
+                if (movies[i].title === selectedTitle) {
+                    movieTT = movies[i].title;
+                    movieId = movies[i].id;
+                    break;
+                }
+            }
+
+            $.ajax({
+                url: `http://localhost:8080/api/movies/${movieTT}`,
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                }
+            });
+            $.ajax({
+                url: `http://localhost:8080/api/showtime/${movieId}`,
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $("#showtimeList").empty()
+                    let showtimeItem = `<option value="0" selected>Không có suất chiếu</option>`;
+                    $("#showtimeList").append(showtimeItem);
+                    $("#showtime").show();
+                    if (data.length > 0) {
+                        $("#showtimeList").empty()
+                        let showtimeItem;
+                        for (let i = 0; i < data.length; i++) {
+                            let showtime = data[i];
+                            showtimeItem += `<option value="${showtime.id}">${'Date : ' +showtime.showDate +'/' +showtime.startTime+' to '+showtime.endTime}</option>`;
+                            $("#showtimeList").html(showtimeItem);
+                        }
+                        $("#showtime").show();
+                        $("#showtimeList").val(data[0].id);
+                    }
+                },
+                error: function (error) {
+                    $("#showtimeList").empty()
+                    let showtimeItem = `<option value="0" selected>Không có phim này</option>`;
+                    $("#showtimeList").append(showtimeItem);
+                    $("#showtime").show();
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

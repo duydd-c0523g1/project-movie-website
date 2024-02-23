@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout::head}">
+</head>
+<body>
+<div class="container">
+  <header th:replace="~{layout::header}"></header>
+  <section>
+    <div class="row my-5 dashboard-user">
+      <div class="col-lg-3 sidebar-user">
+        <h4>MENU</h4>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item active"><a href="#"><i class="fa-solid fa-circle-info"></i> Thông tin cá nhân</a></li>
+          <li class="list-group-item"><a href="#"><i class="fa-solid fa-ticket"></i> Vé xem phim đã mua</a></li>
+          <li class="list-group-item"><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-7 ms-3">
+        <div class="d-flex">
+          <div class="avatar-user">
+            <img src="https://github.com/mdo.png" alt="mdo" width="100px" height="100px" class="rounded-circle">
+          </div>
+          <div class="info-user">
+            <h3>Phạm Văn Thành</h3>
+            <p>@thanhpv</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="info col-lg-4">
+            <h4>Họ và tên</h4>
+            <p class="text-secondary-custom">Phạm Văn Thành</p>
+          </div>
+          <div class="info col-lg-4">
+            <h4>Số điện thoại</h4>
+            <p class="text-secondary-custom">0987 654 321</p>
+          </div>
+          <div class="info col-lg-4">
+            <h4>Email</h4>
+            <p class="text-secondary-custom">phamthanhx18@gmail.com</p>
+          </div>
+          <div class="info col-lg-4">
+            <h4>Birthday</h4>
+            <p class="text-secondary-custom">01/01/2001</p>
+          </div>
+          <div class="info col-lg-4">
+            <h4>Số CMND/CCCD</h4>
+            <p class="text-secondary-custom">187800000000</p>
+          </div>
+          <div class="info col-lg-4">
+            <h4>Địa chỉ</h4>
+            <p class="text-secondary-custom">282 Trần Hưng Đạo, Sơn Trà, Đà Nẵng</p>
+          </div>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-primary">Sửa thông tin</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<footer th:replace="~{layout::footer}"></footer>
+</body>
+</html>
